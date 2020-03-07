@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+	<link href="css/tws-abq-style.css" rel="stylesheet">
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+		.mapboxgl-popup {
+		max-width: 400px;
+		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+</style>
+</head>
+<body>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />
+
+<div id='map'></div>
+
+<div class='legend'>
+	<div class='legend-title'>Albuquerque Parks by Type</div>
+		<div class='legend-subtitle'>Parks</div>
+				<div class='legend-scale'>
+					  <ul class='legend-labels'>
+						<li><span style='background:#00c5ff;'></span>Aquatics Facility</li>
+						<li><span style='background:#e60000;'></span>Fully-inclusive Playground</li>
+						<li><span style='background:#8400a8;'></span>Pocket Park</li>
+						<li><span style='background:#cf33ff;'></span>Neighborhood Park</li>
+						<li><span style='background:#e48cff;'></span>Community Park</li>
+						<li><span style='background:#e8beff;'></span>Regional Park</li>				
+					  </ul>
+				</div>
+		<div class='legend-subtitle'>Open Space</div>
+				<div class='legend-scale'>
+					  <ul class='legend-labels'>
+						<li><span style='background:#ede885;'></span>Open Space (closed)</li>
+						<li><span style='background:#00e6a9;'></span>Open Space (facility)</li>
+						<li><span style='background:#a8e62e;'></span>Open Space (hiking)</li>
+						<li><span style='background:#267300;'></span>Open Space (multi-use)</li>
+						<li><span style='background:#aaff00;'></span>Open Space (special use)</li>
+						<li><span style='background:#a3bf7c;'></span>Open Space (undeveloped)</li>
+						<li><span style='background:#cfcc9b;'></span>Open Space (closed)</li>
+					</ul>
+				</div>				
+		<div class='legend-source'>Source: <a href="https://www.cabq.gov/parksandrecreation/open-space"  target="_blank">City of Albuquerque</a></div>
+		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
+	</div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWIHzbnOTebcQ';
+
+//set bounds to metro ABQ
+var bounds = [
+		[-106.932335,34.950398], // southwest coords
+		[-106.310577,35.211124] // northeast coords
+	];
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/core-gis/ck7gzi9un01w71iql6f19xrom/draft', // stylesheet location
+    center: [-106.627979,35.104743], // starting position [lng, lat]
+    zoom: 12, // starting zoom
+	maxBounds:  bounds // sets bounds as max
+
+});
+
+map.on('load', function () {
+
+	map.addSource('parks',{
+		type:'vector',
+		url:'mapbox://core-gis.d6x4tjsb'
+		});
+		
+		//Add a map layer for all the parcels
+
+	map.addLayer({
+		"id":"parks_openspace",
+		"type":"fill",
+		"source":"parks",
+		"source-layer":"BernCoGreenprint_ConservedLan-31kfyy",
+		"layout":{		},
+		"paint":{
+			'fill-color': 'rgba(200, 100, 240, 0)',
+            'fill-outline-color': 'rgba(200, 100, 240, 0)'
+			}
+	});
+});
+
+// When a click event occurs on a feature in the states layer, open a popup at the
+    // location of the click, with description HTML from its properties.
+    map.on('click', 'parks_openspace', function (e) {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(fillpopup(e.features[0].properties))
+            .addTo(map);
+		console.log(e.features[0].properties);
+    });
+
+	 // Change the cursor to a pointer when the mouse is over the parcel layer.
+    map.on('mouseenter', 'parks_openspace', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'parks_openspace', function () {
+        map.getCanvas().style.cursor = '';
+    });
+
+	function fillpopup(data){
+		// clear existing popups
+		document.querySelectorAll('.mapboxgl-popup').forEach(e => e.remove());
+		var html = "";
+		html = html + "<span class='varname'>Name: </span> <span class='attribute'>" + data.TPL_NAME +"</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Owner: </span> <span class='attribute'>" + data.Ownership + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Category: </span><span class='attribute'>" + data.TWS_CAT_v2+ "</span>";
+		return html;
+		//this will return the string to the calling function
+	}
+
+	function clearpopups(){
+		document.querySelectorAll('.mapboxgl-popup').forEach(
+			e => e.remove()
+		);
+	}
+
+	//Add the Mapbox geocoder to allow search by address
+	map.addControl(new MapboxGeocoder({
+		accessToken: mapboxgl.accessToken,
+		mapboxgl: mapboxgl
+	}));
+
+	//Add an on-mousedown event to the search suggestions to clear existing popups before doing a new search
+	// This approach assumes that there's only one matching element
+	document.querySelectorAll('.suggestions-wrapper')[0].addEventListener(
+		"mousedown",
+		clearpopups
+	);
+	// Add the same action on submit of the search form, to handle people who just type and press return
+	document.querySelectorAll('.mapboxgl-ctrl-geocoder--input')[0].addEventListener(
+		"keydown",
+		function(e){
+			if (e.which == 13 || e.keyCode == 13) {
+				clearpopups();
+			}
+		}
+	);
+
+</script>
+
+</body>
+</html>
