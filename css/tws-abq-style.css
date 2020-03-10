@@ -155,3 +155,88 @@ a:hover {
 a:active {
     text-decoration: underline;
 }
+
+/* Use this to style the 'Zoom to Districts' pop-out */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #ffff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    /*padding-top: 60px;*/
+}
+
+/*.sidenav p {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s
+}*/
+
+p.navtitle {
+    padding: 20px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+	font-weight: bold;
+    color: #b1d4cb;
+    display: block;
+    transition: 0.3s
+}
+
+p.moreinfo  {
+  padding: 8px 8px 8px 32px;
+  background: #ffff;
+  color:#4a4a4a;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-size:14px;
+ /* width:auto !important;*/
+  }
+
+.sidenav a {
+    /*padding: 8px 8px 8px 32px;*/
+    text-decoration: none;
+	font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #00476B;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 28px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 0px;
+}
+
+#about {
+	/*transition: margin-left .5s;
+    padding: 16px;*/
+	font-family: "Montserrat", Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	color: #ffff;
+	filter: alpha(opacity = 0);
+    position:fixed;
+	padding:5px 5px 5px 5px;
+	left:20px;
+	top:20px;
+    display:block;
+    z-index:2;
+    background:#D8622F;
+	overflow: auto;
+}

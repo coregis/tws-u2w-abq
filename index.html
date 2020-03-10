@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
+    <title>Metro Albuquerque Parks & Open Space</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
@@ -14,9 +14,49 @@
 		max-width: 400px;
 		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
-</style>
+	</style>
 </head>
 <body>
+
+	<!--BEGIN FLYOUT FOR 'ABOUT THIS MAP'-->
+
+		<div id="mySidenav" class="sidenav">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<p>
+				<br /><br /><br />
+			</p>
+			<p class="moreinfo">
+				This map shows parks and open spaces in the greater Albuquerque area. Parks are shown in shades of purple, red, and blue. Open spaces are shown in shades of green and brown. Click on a park to see more information, such as the Name, Owner, and Category. Use the search box on the upper right to find parks by street address. Zoom in or out using your mouse wheel or the +/- controls on the lower left of the map.
+				<br /><br />
+
+				<br /><br />
+				Map produced by <a href="http://www.coregis.net/" target="_blank">CoreGIS</a>.
+				<br /><br />
+				<a href="https://www.wilderness.org/" target="_blank">The Wilderness Society</a>
+				<br />
+				<a href="https://www.wilderness.org/wild-places/new-mexico/urban-wild-albuquerque" target="_blank">Urban to Wild Project</a>
+			</p>
+		</div>
+
+		<div id="main">
+
+		<div id="about">
+			<span style="font-size:16px;cursor:pointer" onclick="openNav()">&#9776; About this Map</span>
+		</div>
+
+		<script>
+			function openNav() {
+				document.getElementById("mySidenav").style.width = "300px";
+				document.getElementById("main").style.marginLeft = "300px";
+			}
+
+			function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+				document.getElementById("main").style.marginLeft= "0";
+			}
+		</script>
+
+	<!--END FLYOUT FOR 'ZOOM TO LAYERS'-->
 
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />
@@ -36,7 +76,7 @@
 						<li><span style='background:#e8beff;'></span>Regional Park</li>				
 					  </ul>
 				</div>
-		<div class='legend-subtitle'>Open Space</div>
+		<!--<div class='legend-subtitle'>Open Space</div>-->
 				<div class='legend-scale'>
 					  <ul class='legend-labels'>
 						<li><span style='background:#ede885;'></span>Open Space (closed)</li>
@@ -58,8 +98,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWI
 
 //set bounds to metro ABQ
 var bounds = [
-		[-106.932335,34.950398], // southwest coords
-		[-106.310577,35.211124] // northeast coords
+		[-107.250595,34.844803], // southwest coords
+		[-106.007080,35.366096] // northeast coords
 	];
 
 var map = new mapboxgl.Map({
@@ -93,7 +133,7 @@ map.on('load', function () {
 	});
 });
 
-// When a click event occurs on a feature in the states layer, open a popup at the
+	// When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.
     map.on('click', 'parks_openspace', function (e) {
         new mapboxgl.Popup()
@@ -154,6 +194,12 @@ map.on('load', function () {
 		}
 	);
 
+	// Add zoom controls to the map, with the compass turned off; position is modified in CSS
+		map.addControl(new mapboxgl.NavigationControl({
+			// Hide rotation control.
+			showCompass: false
+			}), 'bottom-left');
+	
 </script>
 
 </body>
