@@ -98,6 +98,7 @@ ul{
     text-align: left;
     margin-bottom: 5px;
     font-weight: bold;
+	font-style: italic;
     font-size: 75%;
     }	
 	
@@ -124,6 +125,17 @@ ul{
     margin-left: 0;
     border: 1px solid #999;
     }
+	
+  .legend ul.legend-lines li span {
+    display: block;
+    float: left;
+    height: 7px;
+    width: 24px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+	
   .legend .legend-source {
     font-size: 70%;
     color: #999;

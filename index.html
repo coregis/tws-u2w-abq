@@ -64,8 +64,8 @@
 <div id='map'></div>
 
 <div class='legend'>
-	<div class='legend-title'>Albuquerque Parks by Type</div>
-		<div class='legend-subtitle'>Parks</div>
+	<div class='legend-title'>Albuquerque Parks & Trails</div>
+		<div class='legend-subtitle'>By Type/Use</div>
 				<div class='legend-scale'>
 					  <ul class='legend-labels'>
 						<li><span style='background:#00c5ff;'></span>Aquatics Facility</li>
@@ -87,7 +87,21 @@
 						<li><span style='background:#a3bf7c;'></span>Open Space (undeveloped)</li>
 						<li><span style='background:#cfcc9b;'></span>Open Space (closed)</li>
 					</ul>
-				</div>				
+				</div>	
+				<div class='legend-scale'>
+					  <ul class='legend-lines'>
+						<li><span style='border: 0; border-bottom: 2px solid #ffaa00' 'color=#FFFFFF' 'size=6'></span>Paved Multiple Use Trail</span></li>
+						<li><span style='border: 0; border-bottom: 2px dashed #ffaa00' 'color=#FFFFFF' 'size=6'></span>Unpaved Multiple Use Trail</li>
+						<li><span style='border: 0; border-bottom: 2px dashed #4c7300' 'color=#FFFFFF' 'size=6'></span>Hiking Trail</li>
+						<li><span style='border: 0; border-bottom: 2px solid #704489' 'color=#FFFFFF' 'size=6'></span></span>Buffered Lane</li>
+						<li><span style='border: 0; border-bottom: 2px solid #aa66cd' 'color=#FFFFFF' 'size=6'></span></span>Bike Lane</li>
+						<li><span style='border: 0; border-bottom: 2px dashed #aa66cd' 'color=#FFFFFF' 'size=6'></span>Bike Lane Shared with Cars</li>						
+						<li><span style='border: 0; border-bottom: 2px solid #ca7af5' 'color=#FFFFFF' 'size=6'></span></span>Bike Boulevard</li>
+						<li><span style='border: 0; border-bottom: 2px solid #55ff00' 'color=#FFFFFF' 'size=6'></span></span>Bicycle/Pedestrian Crossing</li>						
+						<li><span style='border: 0; border-bottom: 2px solid #33a648' 'color=#FFFFFF' 'size=6'></span></span>NMDOT Bicycle Facility</li>
+					</ul>
+				</div>	
+				
 		<div class='legend-source'>Source: <a href="https://www.cabq.gov/parksandrecreation/open-space"  target="_blank">City of Albuquerque</a></div>
 		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
 	</div>
@@ -133,7 +147,7 @@ map.on('load', function () {
 	});
 });
 
-	// When a click event occurs on a feature in the states layer, open a popup at the
+	// When a click event occurs on a feature in the parks layer, open a popup at the
     // location of the click, with description HTML from its properties.
     map.on('click', 'parks_openspace', function (e) {
         new mapboxgl.Popup()
@@ -143,7 +157,7 @@ map.on('load', function () {
 		console.log(e.features[0].properties);
     });
 
-	 // Change the cursor to a pointer when the mouse is over the parcel layer.
+	 // Change the cursor to a pointer when the mouse is over the parks layer.
     map.on('mouseenter', 'parks_openspace', function () {
         map.getCanvas().style.cursor = 'pointer';
     });
